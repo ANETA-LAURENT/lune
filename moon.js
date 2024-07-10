@@ -1,6 +1,6 @@
 // Récupérer les données de la phase de la lune depuis l'API de la NASA
 async function getMoonPhase() {
-  const response = await fetch('https://api.nasa.gov/planetary/earth/assets?lon=2.35&lat=48.86&dim=0.15&api_key=YOUR_API_KEY');
+  const response = await fetch('https://api.nasa.gov/planetary/earth/assets?lon=2.35&lat=48.86&dim=0.15&api_key=SXceqBQtBcJO1CF9BCQ2HfutF7kdQMlRTBKCAb61');
   const data = await response.json();
   const date = new Date(data.date);
   const illumination = data.cloud_score * 100;
