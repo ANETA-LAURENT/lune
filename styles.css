@@ -18,3 +18,8 @@ body {
   font-size: 24px;
   margin-top: 20px;
 }
+
+#date {
+  font-size: 18px;
+  margin-top: 10px;
+}
