@@ -50,7 +50,10 @@ async function updateMoonPhase() {
       break;
   }
 
-  dateText.textContent = `Date : ${date.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+  // Formater la date en français
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const formattedDate = new Intl.DateTimeFormat('fr-FR', options).format(date);
+  dateText.textContent = `Date : ${formattedDate}`;
 }
 
 // Appeler la fonction de mise à jour de la phase de la lune toutes les heures
