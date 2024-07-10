@@ -1,63 +1,39 @@
-// Récupérer les données de la phase de la lune depuis l'API de la NASA
-async function getMoonPhase() {
-  const response = await fetch('https://api.nasa.gov/planetary/earth/assets?lon=2.35&lat=48.86&dim=0.15&api_key=SXceqBQtBcJO1CF9BCQ2HfutF7kdQMlRTBKCAb61');
-  const data = await response.json();
-  const date = new Date(data.date);
-  const illumination = data.cloud_score * 100;
-  const phase = Math.floor(((date.getDate() - 1) % 29) / 7);
-  return { illumination, phase, date };
-}
+    document.addEventListener("DOMContentLoaded", function() {
+    const moonPhaseElement = document.getElementById("moon-phase");
+    const moonImageElement = document.getElementById("moon-image");
 
-// Mettre à jour la phase de la lune, l'image associée et la date
-async function updateMoonPhase() {
-  const { phase, date } = await getMoonPhase();
-  const moon = document.getElementById('moon');
-  const phaseText = document.getElementById('phase');
-  const dateText = document.getElementById('date');
+    async function fetchMoonPhase() {
+        const response = await fetch("https://api.farmsense.net/v1/moonphases/?d=2024-07-10");
+        const data = await response.json();
+        return data[0];
+    }
 
-  switch (phase) {
-    case 0:
-      moon.src = 'new-moon.png';
-      phaseText.textContent = 'Nouvelle Lune';
-      break;
-    case 1:
-      moon.src = 'waxing-crescent.png';
-      phaseText.textContent = 'Lune Croissante';
-      break;
-    case 2:
-      moon.src = 'first-quarter.png';
-      phaseText.textContent = 'Premier Quartier';
-      break;
-    case 3:
-      moon.src = 'waxing-gibbous.png';
-      phaseText.textContent = 'Lune Gibbeuse Croissante';
-      break;
-    case 4:
-      moon.src = 'full-moon.png';
-      phaseText.textContent = 'Pleine Lune';
-      break;
-    case 5:
-      moon.src = 'waning-gibbous.png';
-      phaseText.textContent = 'Lune Gibbeuse Décroissante';
-      break;
-    case 6:
-      moon.src = 'last-quarter.png';
-      phaseText.textContent = 'Dernier Quartier';
-      break;
-    case 7:
-      moon.src = 'waning-crescent.png';
-      phaseText.textContent = 'Lune Décroissante';
-      break;
-  }
+    function getMoonImage(phase) {
+        const phaseImages = {
+            "New Moon": "https://example.com/new_moon.png",
+            "Waxing Crescent": "https://example.com/waxing_crescent.png",
+            "First Quarter": "https://example.com/first_quarter.png",
+            "Waxing Gibbous": "https://example.com/waxing_gibbous.png",
+            "Full Moon": "https://example.com/full_moon.png",
+            "Waning Gibbous": "https://example.com/waning_gibbous.png",
+            "Last Quarter": "https://example.com/last_quarter.png",
+            "Waning Crescent": "https://example.com/waning_crescent.png",
+        };
+        return phaseImages[phase] || "";
+    }
 
-  // Formater la date en français
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  const formattedDate = new Intl.DateTimeFormat('fr-FR', options).format(date);
-  dateText.textContent = `Date : ${formattedDate}`;
-}
+    async function updateMoonPhase() {
+        try {
+            const moonData = await fetchMoonPhase();
+            const moonPhase = moonData.Phase;
+            moonPhaseElement.textContent = moonPhase;
 
-// Appeler la fonction de mise à jour de la phase de la lune toutes les heures
-setInterval(updateMoonPhase, 3600000);
+            const moonImageUrl = getMoonImage(moonPhase);
+            moonImageElement.innerHTML = `<img src="${moonImageUrl}" alt="${moonPhase}">`;
+        } catch (error) {
+            moonPhaseElement.textContent = "Error fetching moon phase data.";
+        }
+    }
 
-// Appeler la fonction de mise à jour de la phase de la lune immédiatement au chargement de la page
-updateMoonPhase();
+    updateMoonPhase();
+});
