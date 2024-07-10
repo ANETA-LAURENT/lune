@@ -8,38 +8,44 @@ async function getMoonPhase() {
   return { illumination, phase, date };
 }
 
-// Mettre à jour la phase de la lune, le texte associé et la date
+// Mettre à jour la phase de la lune, l'image associée et la date
 async function updateMoonPhase() {
-  const { illumination, phase, date } = await getMoonPhase();
+  const { phase, date } = await getMoonPhase();
   const moon = document.getElementById('moon');
   const phaseText = document.getElementById('phase');
   const dateText = document.getElementById('date');
 
-  moon.style.backgroundImage = `linear-gradient(to right, #000 ${illumination}%, #fff ${illumination}%)`;
-
   switch (phase) {
     case 0:
+      moon.src = 'new-moon.png';
       phaseText.textContent = 'Nouvelle Lune';
       break;
     case 1:
+      moon.src = 'waxing-crescent.png';
       phaseText.textContent = 'Lune Croissante';
       break;
     case 2:
+      moon.src = 'first-quarter.png';
       phaseText.textContent = 'Premier Quartier';
       break;
     case 3:
+      moon.src = 'waxing-gibbous.png';
       phaseText.textContent = 'Lune Gibbeuse Croissante';
       break;
     case 4:
+      moon.src = 'full-moon.png';
       phaseText.textContent = 'Pleine Lune';
       break;
     case 5:
+      moon.src = 'waning-gibbous.png';
       phaseText.textContent = 'Lune Gibbeuse Décroissante';
       break;
     case 6:
+      moon.src = 'last-quarter.png';
       phaseText.textContent = 'Dernier Quartier';
       break;
     case 7:
+      moon.src = 'waning-crescent.png';
       phaseText.textContent = 'Lune Décroissante';
       break;
   }
