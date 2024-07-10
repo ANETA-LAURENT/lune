@@ -5,14 +5,15 @@ async function getMoonPhase() {
   const date = new Date(data.date);
   const illumination = data.cloud_score * 100;
   const phase = Math.floor(((date.getDate() - 1) % 29) / 7);
-  return { illumination, phase };
+  return { illumination, phase, date };
 }
 
-// Mettre à jour la phase de la lune et le texte associé
+// Mettre à jour la phase de la lune, le texte associé et la date
 async function updateMoonPhase() {
-  const { illumination, phase } = await getMoonPhase();
+  const { illumination, phase, date } = await getMoonPhase();
   const moon = document.getElementById('moon');
   const phaseText = document.getElementById('phase');
+  const dateText = document.getElementById('date');
 
   moon.style.backgroundImage = `linear-gradient(to right, #000 ${illumination}%, #fff ${illumination}%)`;
 
@@ -42,6 +43,8 @@ async function updateMoonPhase() {
       phaseText.textContent = 'Lune Décroissante';
       break;
   }
+
+  dateText.textContent = `Date : ${date.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
 }
 
 // Appeler la fonction de mise à jour de la phase de la lune toutes les heures
